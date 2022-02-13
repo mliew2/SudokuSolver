@@ -1,30 +1,32 @@
 import sys
 
-#Read sudoku puzzle from file and return a list with the values in it
+#Reads sudoku puzzle from file and returns a 2d list of integers with the values in it
 def parseInput(filename):
     try:
         file = open(filename, "r")
     except FileNotFoundError:
         print("Input file does not exist")
-        sys.exit(0)
+        sys.exit(0) #exits the program if the file does not exist
     content = file.read()
     file.close()
 
-    #Replacing all the blank tiles with 0 for computation later on
+    #Replaces all the blank tiles with 0 for computation later on
     content = content.replace(" ", "0")
 
-    #Create a new list without "|" and newline symbol
-    board = [e for e in content if e not in ('|', '\n')]
+    #Creates a new string list without "|" and newline symbol
+    strList = [e for e in content if e not in ('|', '\n')]
 
-    #returns a list of integers of the sudoku puzzle
-    return list(map(int, board))
+    #Converts the list of strings to a 2d list of integers
+    intList = list(map(int, strList))
+    board = [[intList[(j * 9) + i] for i in range(9)] for j in range(9)]
+    return board
 
-#Write the solved puzzle into an output file called output.txt
+#Writes the solved puzzle into an output file called output.txt
 def outputToFile(board):
     try:
         file = open("output.txt", "x")
     except FileExistsError:
-        pass
+        pass #Ignores error if file already exists
     finally:
         file = open("output.txt", "w")
     
@@ -32,14 +34,21 @@ def outputToFile(board):
     output = ""
     for i in range(9):
         for j in range(9):
-            output += "|" + str(board[(i * 9) + j]) + "|"
+            output += "|" + str(board[i][j]) + "|"
         if i != 8:
             output += "\n"
     file.write(output)
-    print (output)
+
+#Prints board for debugging purpose
+def printBoard(board):
+    output = ""
+    for i in range(9):
+        for j in range(9):
+            output += "|" + str(board[i][j]) + "|"
+        output += "\n"
+    print(output)
 
 
 board = parseInput("input.txt")
-print(board)
-print(len(board))
-outputToFile(board)
+printBoard(board)
+#outputToFile(board)
