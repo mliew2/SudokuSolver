@@ -36,14 +36,15 @@ def outputToFile():
     Writes the solved puzzle into an output file called output.txt
     Only called when puzzle is solved
     """
+    #Creates the file output.txt if it does not exist
     try:
-        file = open("testoutput.txt", "x")
+        file = open("output.txt", "x")
 
     #Ignores error if file already exists
     except FileExistsError:
         pass
     finally:
-        file = open("testoutput.txt", "w")
+        file = open("output.txt", "w")
     
     #Build the ouput string to be written into the file
     output = ""
@@ -169,5 +170,5 @@ def startSolver():
     else:
         print("No solution found. This is not a valid Sudoku")
 
-board = parseInput("input.txt")
+board = parseInput("test.txt")
 startSolver()
