@@ -3,7 +3,6 @@ import sys
 
 board = []
 
-
 def parseInput(filename):
     """
     Reads sudoku puzzle from 'filename'
@@ -170,5 +169,5 @@ def startSolver():
     else:
         print("No solution found. This is not a valid Sudoku")
 
-board = parseInput("test.txt")
+board = parseInput("input.txt")
 startSolver()
