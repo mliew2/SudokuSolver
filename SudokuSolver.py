@@ -80,6 +80,7 @@ def printBoard():
         output += "\n"
     print(output)
 
+
 def checkConstraints(val, row, col):
     """
     Consistency checks to see if inserting the 'val' at board[row][col] will result in a violation
@@ -114,6 +115,7 @@ def checkConstraints(val, row, col):
 
     return True
 
+
 def getBlankTiles():
     """
     Returns a list of unique indices of the blank tiles on the board
@@ -125,6 +127,7 @@ def getBlankTiles():
             if board[i][j] == 0:
                 listOfBlankTiles.append(i*9 + j)
     return listOfBlankTiles
+
 
 def backtrack(count, blankTiles):
     """
@@ -157,7 +160,8 @@ def backtrack(count, blankTiles):
                 #Reassign that tile to 0 if the current branch is not a path to the solution
                 else:
                     board[index//9][index%9] = 0
-                    
+
+
 def startSolver():
     """
     Starts the algorithm to solve the Sudoku puzzle
@@ -169,6 +173,7 @@ def startSolver():
         outputToFile()
     else:
         print("No solution found. This is not a valid Sudoku")
+
 
 board = parseInput("test.txt")
 startSolver()
