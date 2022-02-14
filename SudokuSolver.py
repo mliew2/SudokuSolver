@@ -129,7 +129,7 @@ def getBlankTiles():
     return listOfBlankTiles
 
 
-def backtrack(count, blankTiles):
+def backtrackSearch(count, blankTiles):
     """
     Does a depth-first search recustively to find a solution to the puzzle
     'count' is used to get the next blank tile index from the 'blankTiles' list
@@ -154,7 +154,7 @@ def backtrack(count, blankTiles):
             #then moves on to search the next blank tile
             else:
                 board[index//9][index%9] = i
-                if backtrack(count+1, blankTiles):
+                if backtrackSearch(count+1, blankTiles):
                     return True
                 
                 #Reassign that tile to 0 if the current branch is not a path to the solution
@@ -169,11 +169,12 @@ def startSolver():
     Prints a message otherwise
     """
     blankTiles = getBlankTiles()
-    if backtrack(0, blankTiles):
+    if backtrackSearch(0, blankTiles):
+        print("Solution found!")
         outputToFile()
     else:
         print("No solution found. This is not a valid Sudoku")
 
 
-board = parseInput("test.txt")
+board = parseInput("input.txt")
 startSolver()
