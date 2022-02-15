@@ -1,7 +1,5 @@
-from operator import index
-import sys
 
-board = []
+import sys
 
 def parseInput(filename):
     """
@@ -31,7 +29,7 @@ def parseInput(filename):
     return list2d
 
 
-def outputToFile():
+def outputToFile(board):
     """
     Writes the solved puzzle into an output file called output.txt
     Only called when puzzle is solved
@@ -56,7 +54,7 @@ def outputToFile():
     file.write(output)
 
 
-def isSolved():
+def isSolved(board):
     """
     Checks if the sudoku puzzle is solved by checking that there are no tiles with 0
     Returns true if it is solved
@@ -68,7 +66,7 @@ def isSolved():
     return True
 
 
-def printBoard():
+def printBoard(board):
     """
     Prints the current state of the board 
     Mostly for debugging purpose
@@ -81,7 +79,7 @@ def printBoard():
     print(output)
 
 
-def checkConstraints(val, row, col):
+def checkConstraints(val, row, col, board):
     """
     Consistency checks to see if inserting the 'val' at board[row][col] will result in a violation
     That is the value does not appear in the same row, column and 3x3 subgrid
@@ -116,7 +114,7 @@ def checkConstraints(val, row, col):
     return True
 
 
-def getBlankTiles():
+def getBlankTiles(board):
     """
     Returns a list of unique indices of the blank tiles on the board
     Equation to get unique index = row*9 + column
@@ -129,32 +127,32 @@ def getBlankTiles():
     return listOfBlankTiles
 
 
-def backtrackSearch(count, blankTiles):
+def backtrackSearch(count, blankTiles, board):
     """
     Does a depth-first search recustively to find a solution to the puzzle
     'count' is used to get the next blank tile index from the 'blankTiles' list
     """
     #Base case to check if the puzzle is solved and returns True if solved
-    if isSolved():
+    if isSolved(board):
         return True
     else:
         index = blankTiles[count]
         for i in range(1, 10):
-
+            consistencyCheck = checkConstraints(i, index//9, index%9, board) 
             #If all 1-9 violates the constraints for the current tile
             #return false to leave this branch and try a different branch
-            if i == 9 and not checkConstraints(i, index//9, index%9):
+            if i == 9 and not consistencyCheck:
                 return False
 
             #Constraints are checked every time before a value is inserted into the board
-            elif not checkConstraints(i, index//9, index%9):
+            elif not consistencyCheck:
                 continue
 
             #If the constraints are not violated, insert value into that tile
             #then moves on to search the next blank tile
             else:
                 board[index//9][index%9] = i
-                if backtrackSearch(count+1, blankTiles):
+                if backtrackSearch(count+1, blankTiles, board):
                     return True
                 
                 #Reassign that tile to 0 if the current branch is not a path to the solution
@@ -162,19 +160,19 @@ def backtrackSearch(count, blankTiles):
                     board[index//9][index%9] = 0
 
 
-def startSolver():
+def startSolver(board):
     """
     Starts the algorithm to solve the Sudoku puzzle
     Calles the outputToFile function if a solution is found
     Prints a message otherwise
     """
-    blankTiles = getBlankTiles()
-    if backtrackSearch(0, blankTiles):
+    blankTiles = getBlankTiles(board)
+    if backtrackSearch(0, blankTiles, board):
         print("Solution found!")
-        outputToFile()
+        outputToFile(board)
     else:
         print("No solution found. This is not a valid Sudoku")
 
 
 board = parseInput("input.txt")
-startSolver()
+startSolver(board)
