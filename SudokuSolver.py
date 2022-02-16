@@ -79,6 +79,19 @@ def printBoard(board):
     print(output)
 
 
+def getBlankTiles(board):
+    """
+    Returns a list of unique indices of the blank tiles on the board
+    Equation to get unique index = row*9 + column
+    """
+    listOfBlankTiles = []
+    for i in range(9):
+        for j in range(9):
+            if board[i][j] == 0:
+                listOfBlankTiles.append(i*9 + j)
+    return listOfBlankTiles
+
+
 def checkConstraints(val, row, col, board):
     """
     Consistency checks to see if inserting the 'val' at board[row][col] will result in a violation
@@ -114,22 +127,9 @@ def checkConstraints(val, row, col, board):
     return True
 
 
-def getBlankTiles(board):
-    """
-    Returns a list of unique indices of the blank tiles on the board
-    Equation to get unique index = row*9 + column
-    """
-    listOfBlankTiles = []
-    for i in range(9):
-        for j in range(9):
-            if board[i][j] == 0:
-                listOfBlankTiles.append(i*9 + j)
-    return listOfBlankTiles
-
-
 def backtrackSearch(count, blankTiles, board):
     """
-    Does a depth-first search recustively to find a solution to the puzzle
+    Does a depth-first search recursively to find a solution to the puzzle
     'count' is used to get the next blank tile index from the 'blankTiles' list
     """
     #Base case to check if the puzzle is solved and returns True if solved
